@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Contoh Integrasi Web3.js</title>
+</head>
+<body>
+  <h1>Integrasi Web3.js dengan HTML</h1>
+  <button id="connect">Hubungkan ke Metamask</button>
+  <p id="account">Alamat: </p>
+
+  <!-- Memasukkan Web3.js via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+  <script>
+    window.addEventListener('load', async () => {
+      // Cek apakah browser mendukung Ethereum (misalnya ada ekstensi Metamask)
+      if (window.ethereum) {
+        window.web3 = new Web3(window.ethereum);
+        try {
+          // Meminta akses ke akun pengguna
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
+        } catch (error) {
+          console.error("Akses ke akun ditolak:", error);
+        }
+      } else {
+        alert('Browser kamu tidak mendukung Ethereum. Silakan instal Metamask!');
+        return;
+      }
+
+      // Fungsi untuk menghubungkan dan menampilkan alamat akun
+      document.getElementById('connect').addEventListener('click', async () => {
+        const accounts = await web3.eth.getAccounts();
+        document.getElementById('account').innerText = "Alamat: " + accounts[0];
+      });
+    });
+  </script>
+</body>
+</html>
